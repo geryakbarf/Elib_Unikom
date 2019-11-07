@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_marginStart="15dp"
+    android:layout_marginEnd="10dp"
+    android:background="#ffffff">
+
+    <ImageView
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:src="@drawable/ilkom"
+        android:id="@+id/imgLibrary"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:maxWidth="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Computer"
+        android:textColor="#34495e"
+        android:textStyle="bold"
+        android:id="@+id/txtLibrary"/>
+
+
+</LinearLayout>
