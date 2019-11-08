@@ -69,8 +69,6 @@ class HomeFragment : Fragment() {
                         var judul = ob.getString("judul")
                         if (judul.length > 25)
                             judul = judul.substring(0, 26) + "..."
-                        else
-                            judul = judul
 
                         val listData = HotBookModels(
                             ob.getString("id"),
@@ -106,8 +104,6 @@ class HomeFragment : Fragment() {
                         var judul = ob.getString("judul")
                         if (judul.length > 44)
                             judul = judul.substring(0, 45) + "..."
-                        else
-                            judul = judul
 
                         val listData = HotBookModels(
                             ob.getString("id"),
