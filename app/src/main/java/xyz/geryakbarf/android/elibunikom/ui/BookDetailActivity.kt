@@ -15,7 +15,9 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import xyz.geryakbarf.android.elibunikom.R
+import xyz.geryakbarf.android.elibunikom.api.DownloadApi
 import xyz.geryakbarf.android.elibunikom.api.GetDetailApi
+import xyz.geryakbarf.android.elibunikom.models.BaseModels
 import xyz.geryakbarf.android.elibunikom.models.DetailModels
 
 class BookDetailActivity : AppCompatActivity(), View.OnClickListener {
@@ -23,11 +25,14 @@ class BookDetailActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var url: String
     lateinit var progressDialog: ProgressDialog
     val urlku = "http://android.geryakbarf.xyz/elib/"
+    lateinit var id: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_detail)
         supportActionBar?.hide()
+
+        id = intent.getStringExtra("id")
         progressDialog = ProgressDialog(this)
         progressDialog.setTitle(getString(R.string.loading))
         btnBack.setOnClickListener(this)
@@ -36,7 +41,6 @@ class BookDetailActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setDataView() {
-        val id = intent.getStringExtra("id")
         Glide.with(applicationContext).load(intent.getStringExtra("img")).into(imgBooks)
         textView3.text = intent.getStringExtra("category")
         progressDialog.show()
@@ -72,9 +76,39 @@ class BookDetailActivity : AppCompatActivity(), View.OnClickListener {
         when (v?.id) {
             R.id.btnBack -> super.onBackPressed()
             R.id.btnDownload -> {
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.setData(Uri.parse(url))
-                startActivity(intent)
+                //Todo Increase the download point from database
+                val retrofit =
+                    Retrofit.Builder().baseUrl(urlku)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build()
+                val upvote: DownloadApi = retrofit.create(DownloadApi::class.java)
+                val call: Call<BaseModels> = upvote.upvote(id)
+                call.enqueue(object : Callback<BaseModels> {
+                    override fun onFailure(call: Call<BaseModels>, t: Throwable) {
+                        Toast.makeText(applicationContext, "Failed to Download", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                    override fun onResponse(
+                        call: Call<BaseModels>,
+                        response: Response<BaseModels>
+                    ) {
+                        val kode = response.body()?.kode
+                        if (kode == 1) {
+                            val intent = Intent(Intent.ACTION_VIEW)
+                            intent.data = Uri.parse(url)
+                            startActivity(intent)
+                        } else
+                            Toast.makeText(
+                                applicationContext,
+                                "Failed to Download :(",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                    }
+
+                })
+
+
             }
         }
     }

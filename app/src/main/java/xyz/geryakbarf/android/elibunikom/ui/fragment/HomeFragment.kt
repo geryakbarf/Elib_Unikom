@@ -1,11 +1,15 @@
 package xyz.geryakbarf.android.elibunikom.ui.fragment
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.Response
@@ -21,6 +25,7 @@ import xyz.geryakbarf.android.elibunikom.adapter.LibraryAdapter
 import xyz.geryakbarf.android.elibunikom.models.HotBookModels
 import xyz.geryakbarf.android.elibunikom.models.LibraryModels
 import xyz.geryakbarf.android.elibunikom.models.data.LibraryData
+
 
 class HomeFragment : Fragment() {
 
@@ -41,6 +46,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        checkConnection()
+
         list.addAll(LibraryData.listLibrary)
         rvLibrary.setHasFixedSize(true)
         rvHotBooks.setHasFixedSize(true)
@@ -138,6 +145,20 @@ class HomeFragment : Fragment() {
         placeHolderHotBooks.stopShimmerAnimation()
         placeHolderLatestBooks.stopShimmerAnimation()
         super.onPause()
+    }
 
+    private fun checkConnection() {
+        val connect =
+            activity!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (connect.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).state == NetworkInfo.State.CONNECTED ||
+            connect.getNetworkInfo(ConnectivityManager.TYPE_WIFI).state == NetworkInfo.State.CONNECTED
+        )
+        //do Nothing
+        else {
+            val t: FragmentTransaction = this.fragmentManager!!.beginTransaction()
+            val fragment = NoInternetFragment()
+            t.replace(R.id.nav_host_fragment, fragment)
+            t.commit()
+        }
     }
 }
