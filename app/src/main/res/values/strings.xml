@@ -25,4 +25,12 @@
     <string name="no_internet_connection_found">No Internet Connection Found</string>
     <string name="check_your_connection_and_try_again">Check Your Connection And Try Again</string>
     <string name="retry">Retry</string>
+    <string name="you_re_not_logged_in">You\'re not logged in...</string>
+    <string name="login_to_continue">Login to continue</string>
+    <string name="username">Username</string>
+    <string name="paasowrd">Password</string>
+    <string name="forgotpassword">Forgot Password ?</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_account_register">Don\'t have account ? Register</string>
+    <string name="register">Register</string>
 </resources>
